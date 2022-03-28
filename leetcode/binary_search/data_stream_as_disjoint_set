@@ -1,0 +1,45 @@
+// https://leetcode.com/problems/data-stream-as-disjoint-intervals/
+// submission: https://leetcode.com/submissions/detail/668622360/ 
+class SummaryRanges() {
+    val intervals = ArrayList<Interval>()
+
+    fun addNum(`val`: Int) {
+        if (intervals.isEmpty()) {
+            intervals.add(Interval(`val`, `val`))
+            return
+        }
+        val searchResult = intervals.binarySearch(Interval(`val`,`val`), compareBy {it.start} )
+        if (searchResult >= 0) return // do nothing, element is already in the interval
+        var insertionPoint = -1 - searchResult
+        val prev = insertionPoint - 1
+        val next = insertionPoint
+        var currStart = `val`
+        var currEnd = `val`
+        if (insertionPoint < intervals.size && currEnd >= intervals[next].start - 1) {
+            currEnd = maxOf(currEnd, intervals[next].end)
+            intervals.removeAt(next)
+        }
+        if (insertionPoint > 0 && intervals[prev].end >= currStart - 1) {
+            currStart = intervals[prev].start
+            currEnd = maxOf(intervals[prev].end, currEnd)
+            intervals.removeAt(prev)
+            insertionPoint--
+        }
+        intervals.add(insertionPoint, Interval(currStart, currEnd))
+    }
+
+    fun getIntervals(): Array<IntArray> {
+        return intervals
+            .map { intArrayOf(it.start, it.end) }
+            .toTypedArray()
+    }
+
+    data class Interval(val start: Int, val end: Int)
+}
+
+/**
+ * Your SummaryRanges object will be instantiated and called as such:
+ * var obj = SummaryRanges()
+ * obj.addNum(`val`)
+ * var param_2 = obj.getIntervals()
+ */
