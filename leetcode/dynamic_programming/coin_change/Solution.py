@@ -1,6 +1,24 @@
 class Solution:
     def coinChange(self, coins: List[int], amount: int) -> int:   
-        return self.coin_change_by_queue(coins, amount)
+        return self.coin_change_bottom_up(coins, amount)
+
+    '''
+    Solution using bottom up DP memoizing the amount. Slower than
+    the queue method, but uses slightly less space for LC test cases
+    https://leetcode.com/problems/coin-change/submissions/1125287055 
+    '''
+    def coin_change_bottom_up(self, coins, amount):
+        memo = [0] # f(0) = 0
+        a = 1
+        while a <= amount:
+            memo.append(math.inf) # init memo[a]
+            for c in coins:
+                if a - c >= 0:
+                    memo[a] = min(memo[a], memo[a - c])
+            memo[a] += 1
+            a += 1
+        ret = memo[-1]
+        return ret if ret != math.inf else -1
 
     '''
     Solution using a queue. Runs pretty fast, beat 99.4% for runtime complexity:
