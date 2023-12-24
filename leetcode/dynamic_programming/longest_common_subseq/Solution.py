@@ -1,7 +1,9 @@
 class Solution:
-    # Beats 96% runtime, 90.8% memory using DP with 1D array
+    # Beats 96.8% runtime, 90.8% memory using DP with 1D array
     # https://leetcode.com/problems/longest-common-subsequence/submissions/1127716668
     def longestCommonSubsequence(self, text1: str, text2: str) -> int:
+        if len(text2) < len(text1):
+            text1, text2 = text2, text1
         n1, n2 = len(text1), len(text2)
         arr1 = [0 for j in range(n2+1)]
         arr2 = [0 for j in range(n2+1)]
