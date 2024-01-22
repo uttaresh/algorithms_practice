@@ -9,14 +9,19 @@ class Solution:
     # I feel pretty good about having done this... didn't need any
     # help at all, figured it out on my own tho it was quite
     # challenging xD
+    # Update: I optimizied it further by looking at other people's
+    # solutions, to cut down on having unnecessary iterations from
+    # "0" contributors. Sill feel good, mostly my own :) 
     def findTargetSumWays(self, nums: List[int], target: int) -> int:
         width = sum(nums)
         dp = defaultdict(int)
         dp[0] = 1
         for i in reversed(range(len(nums))):
             next_dp = defaultdict(int)
-            for j in range(target-width, target+width+1):
-                next_dp[j] = dp[j-nums[i]] + dp[j+nums[i]]
+            for j in dp:
+                if target - width <= j <= target + width + 1:
+                    next_dp[j-nums[i]] += dp[j]
+                    next_dp[j+nums[i]] += dp[j]
             dp = next_dp
             width -= nums[i]
         return dp[target]
