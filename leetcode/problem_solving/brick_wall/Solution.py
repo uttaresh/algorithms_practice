@@ -1,4 +1,4 @@
-# https://leetcode.com/problems/brick-wall/submissions/1183318891
+# https://leetcode.com/problems/brick-wall/submissions/1183321562
 class Solution:
     def leastBricks(self, wall: List[List[int]]) -> int:
         freq = defaultdict(int)
@@ -8,5 +8,4 @@ class Solution:
                 brick_width = row[i]
                 offset += brick_width
                 freq[offset] += 1
-        print(*freq.values())
         return len(wall) - max(freq.values(), default=0)
